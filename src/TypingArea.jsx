@@ -6,7 +6,7 @@ const TypingArea=()=>{
   const [text, setText]=useState(null)
   const [typingSpeed, setTypingSpeed]=useState(null)
   const typingTest="Typing is the process of writing or inputting text by pressing keys on a typewriter, computer keyboard, mobile phone, or calculator. It can be distinguished from other means of text input, such as handwriting and speech recognition. Text can be in the form of letters, numbers and other symbols. The world's first typist was Lillian Sholes from Wisconsin in the United States,[1][2] the daughter of Christopher Latham Sholes, who invented the first practical typewriter.[1]"
-  const testDuration=12// 1 min test for ease
+  const testDuration=60// 1 min test for ease
   const [placeHolder, setPlaceHolder]=useState(typingTest.repeat(3))
   var typingTimeout;
 
