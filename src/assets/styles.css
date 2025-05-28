@@ -6,47 +6,48 @@
   width: 100vw;
   text-align: center;
 }
+
+.Heading{
+  font-size: 20px;
+}
+
 .TextAreaContainer{
   position: relative;
   display: inline-block;
   width: 50vw;
-  /* height: 25vh; */
   padding: 10px;
   font-size: 16px;
+  resize: none;
 }
 
 .TextArea{
-  /* margin:0; */
   position: relative;
   display: inline-block;
-  height: 28vh;
+  height: 50vh;
   padding: 10px;
   font-size: 16px;
   width: 100%;
-  /* padding: 8px 10px; */
   border-radius: 4px;
   background-color: transparent;
   z-index: 1;
-  /* font-family:Arial; */
   font-size:16px;
   line-height: normal;
   resize: none;
   text-align: left;
   font-family: monospace;
-
+  max-height:50vh
 }
 
 .Wrapper{
     position: absolute;
     top: 21px;
     left: 20.9px;
+    height: 50vh;
     color: #aaa;
     pointer-events: none;
     font-size:16px;
     display: block;
-    /* font-family:Arial; */
-  font-family: monospace;
-
+    font-family: monospace;
     line-height: normal;
     text-align: left;
 }
@@ -56,7 +57,7 @@
 }
 
 .TypingSpeed{
-  font-size: 25px;
+  font-size: 20px;
   justify-content:center;
 }
 
@@ -76,8 +77,4 @@
   font-family: 'Times New Roman', Times, serif;
   font-style: italic;
   font-size: 16px;
-
-}
-
-.ms-TextField.ms-TextField--multiline .ms-TextField-field {
 }
