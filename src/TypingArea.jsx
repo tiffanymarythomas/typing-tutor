@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useRef } from 'react'
 
 const TypingArea=()=>{
   const [typing , setTyping] = useState(false)
@@ -6,9 +6,10 @@ const TypingArea=()=>{
   const [text, setText]=useState(null)
   const [typingSpeed, setTypingSpeed]=useState(null)
   const typingTest="Typing is the process of writing or inputting text by pressing keys on a typewriter, computer keyboard, mobile phone, or calculator. It can be distinguished from other means of text input, such as handwriting and speech recognition. Text can be in the form of letters, numbers and other symbols. The world's first typist was Lillian Sholes from Wisconsin in the United States,[1][2] the daughter of Christopher Latham Sholes, who invented the first practical typewriter.[1]"
-  const testDuration=60// 1 min test for ease
+  const testDuration=10// 1 min test for ease
   const [placeHolder, setPlaceHolder]=useState(typingTest.repeat(3))
-  var typingTimeout;
+  const [elapsedTime, setElapsedTime]=useState(0)
+  const typingInterval=useRef(null)
 
   const typingKeys=(event)=>{
     setText(event.target.value)
@@ -33,22 +34,34 @@ const TypingArea=()=>{
   }
 
   const resestTypingTest=()=>{
-    clearTimeout(typingTimeout)
     setTyping(false)
     setStartedTyping(false)
     setText("")
     setTypingSpeed(null)
     setPlaceHolder(typingTest.repeat(3))
+    setElapsedTime(0)
   }
 
   const keyPressed=()=>{
-    if(!typing){
+    if(!startedTyping){
       setStartedTyping(true)
-     typingTimeout= setTimeout(()=>{
-      setTyping(true)
-    },testDuration*1000)
     }
   }
+
+  useEffect(()=>{
+    if(startedTyping&&startedTyping==true){
+        typingInterval.current=setInterval(()=>{
+        var t=elapsedTime
+        if(elapsedTime==testDuration){
+          setTyping(true)
+        }
+        setElapsedTime(t+1)
+      },1000)
+    }
+    return(()=>{
+      clearInterval(typingInterval.current)
+    })
+  },[startedTyping,elapsedTime,typing])
 
   useEffect(()=>{
     setStartedTyping(false)
@@ -56,6 +69,8 @@ const TypingArea=()=>{
   },[typing])
 
   return (
+    <>
+      <progress className='ProgressBar' value={elapsedTime} max={testDuration}></progress>
     <div className='Container'>
       <div>
         <div className='Heading'>Start typing to calculate typing speed</div>
@@ -69,6 +84,7 @@ const TypingArea=()=>{
         <div onClick={resestTypingTest}><button>RESET</button></div>
       </div>
    </div>
+ </>
   )
 }
 

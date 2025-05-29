@@ -2,10 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100%;
   width: 100vw;
   text-align: center;
+
 }
+
 
 .Heading{
   font-size: 20px;
@@ -77,4 +79,9 @@
   font-family: 'Times New Roman', Times, serif;
   font-style: italic;
   font-size: 16px;
+}
+
+.ProgressBar{
+  width:100%;
+ 
 }
