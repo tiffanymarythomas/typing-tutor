@@ -13,20 +13,18 @@
   font-size: 20px;
 }
 
-.TextAreaContainer{
+.TypingContainer{
   position: relative;
-  display: inline-block;
   width: 50vw;
   padding: 10px;
   font-size: 16px;
-  resize: none;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .TextArea{
   position: relative;
-  display: inline-block;
   height: 50vh;
-  padding: 10px;
   font-size: 16px;
   width: 100%;
   border-radius: 4px;
@@ -37,7 +35,6 @@
   resize: none;
   text-align: left;
   font-family: monospace;
-  max-height:50vh
 }
 
 .Wrapper{
@@ -74,14 +71,25 @@
   font-family: 'Times New Roman', Times, serif;
 }
 
-.textarea::placeholder {
-  color: #999;
-  font-family: 'Times New Roman', Times, serif;
-  font-style: italic;
-  font-size: 16px;
-}
-
 .ProgressBar{
   width:100%;
  
+}
+
+.PlaceholderText{
+  position: absolute;
+  top:13px;
+  left:13px;
+  width: inherit;
+  height: 100%;
+  color: #aaa;
+  pointer-events: none;
+  font-size:16px;
+  display: block;
+  font-family: monospace;
+  line-height: normal;
+  text-align: left;
+  display: block;
+  height: 50vh;
+  overflow: hidden;
 }
