@@ -7,9 +7,11 @@ const TypingArea=()=>{
   const [typingSpeed, setTypingSpeed]=useState(null)
   const typingTest="Typing is the process of writing or inputting text by pressing keys on a typewriter, computer keyboard, mobile phone, or calculator. It can be distinguished from other means of text input, such as handwriting and speech recognition. Text can be in the form of letters, numbers and other symbols. The world's first typist was Lillian Sholes from Wisconsin in the United States,[1][2] the daughter of Christopher Latham Sholes, who invented the first practical typewriter.[1]"
   const testDuration=60// 1 min test for ease
-  const [placeHolder, setPlaceHolder]=useState(typingTest.repeat(3))
+  const [placeHolder, setPlaceHolder]=useState(typingTest.repeat(10))
   const [elapsedTime, setElapsedTime]=useState(0)
   const typingInterval=useRef(null)
+  const textAreaRef=useRef(null)
+  const placeholderRef=useRef(null)
 
   const typingKeys=(event)=>{
     setText(event.target.value)
@@ -38,7 +40,7 @@ const TypingArea=()=>{
     setStartedTyping(false)
     setText("")
     setTypingSpeed(null)
-    setPlaceHolder(typingTest.repeat(3))
+    setPlaceHolder(typingTest.repeat(10))
     setElapsedTime(0)
   }
 
@@ -68,15 +70,21 @@ const TypingArea=()=>{
     calculateTypingSpeed()
   },[typing])
 
+  const handleScroll=()=>{
+    if(placeholderRef.current&&textAreaRef.current){
+      placeholderRef.current.scrollTop=textAreaRef.current.scrollTop
+    }
+  }
+
   return (
     <>
       <progress className='ProgressBar' value={elapsedTime} max={testDuration}></progress>
     <div className='Container'>
       <div>
         <div className='Heading'>Start typing to calculate typing speed</div>
-        <div className='TextAreaContainer'>
-          <div className='Wrapper'><span>{placeHolder}</span></div>
-          <textarea onKeyDown={keyPressed} value={text?text:""} disabled={typing} onChange={typingKeys}  className='TextArea'></textarea>
+        <div className='TypingContainer' >
+          <textarea onScroll={handleScroll} ref={textAreaRef} onKeyDown={keyPressed} value={text?text:""} disabled={typing} onChange={typingKeys}  className='TextArea'></textarea>
+          <span ref={placeholderRef} className='PlaceholderText'>{placeHolder}</span>
         </div>
         <div className='TypingSpeed'>Gross WPM  {startedTyping?"Calculating...":typingSpeed?.grossWPM?typingSpeed?.grossWPM+" WPM":""}</div>
         <div className='TypingSpeed'>Net WPM  {startedTyping?"Calculating...":typingSpeed?.netWPM?typingSpeed?.netWPM+" WPM":""}</div>
