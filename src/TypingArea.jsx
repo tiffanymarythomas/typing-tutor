@@ -1,8 +1,8 @@
 import { useEffect, useState,useRef } from 'react'
+import { useSelector,useDispatch } from 'react-redux'
+import { finished, inProgress, notStarted } from './assets/typingslice'
 
 const TypingArea=()=>{
-  const [typing , setTyping] = useState(false)
-  const [startedTyping , setStartedTyping] = useState(false)
   const [text, setText]=useState(null)
   const [typingSpeed, setTypingSpeed]=useState(null)
   const typingTest="Typing is the process of writing or inputting text by pressing keys on a typewriter, computer keyboard, mobile phone, or calculator. It can be distinguished from other means of text input, such as handwriting and speech recognition. Text can be in the form of letters, numbers and other symbols. The world's first typist was Lillian Sholes from Wisconsin in the United States,[1][2] the daughter of Christopher Latham Sholes, who invented the first practical typewriter.[1]"
@@ -12,6 +12,8 @@ const TypingArea=()=>{
   const typingInterval=useRef(null)
   const textAreaRef=useRef(null)
   const placeholderRef=useRef(null)
+  const testStatus=useSelector(state=>state.status)
+  const dispatch=useDispatch()
 
   const typingKeys=(event)=>{
     setText(event.target.value)
@@ -36,8 +38,7 @@ const TypingArea=()=>{
   }
 
   const resestTypingTest=()=>{
-    setTyping(false)
-    setStartedTyping(false)
+    dispatch(notStarted())
     setText("")
     setTypingSpeed(null)
     setPlaceHolder(typingTest.repeat(10))
@@ -45,30 +46,27 @@ const TypingArea=()=>{
   }
 
   const keyPressed=()=>{
-    if(!startedTyping){
-      setStartedTyping(true)
+    if(testStatus=="not_started"){
+      dispatch(inProgress())
     }
   }
 
   useEffect(()=>{
-    if(startedTyping&&startedTyping==true){
+    if(testStatus=="in_progress"){
         typingInterval.current=setInterval(()=>{
         var t=elapsedTime
         if(elapsedTime==testDuration){
-          setTyping(true)
+          dispatch(finished())
         }
         setElapsedTime(t+1)
       },1000)
+    }else if(testStatus=="finished"){
+      calculateTypingSpeed()
     }
     return(()=>{
       clearInterval(typingInterval.current)
     })
-  },[startedTyping,elapsedTime,typing])
-
-  useEffect(()=>{
-    setStartedTyping(false)
-    calculateTypingSpeed()
-  },[typing])
+  },[testStatus,elapsedTime])
 
   const handleScroll=()=>{
     if(placeholderRef.current&&textAreaRef.current){
@@ -83,12 +81,12 @@ const TypingArea=()=>{
       <div>
         <div className='Heading'>Start typing to calculate typing speed</div>
         <div className='TypingContainer' >
-          <textarea onScroll={handleScroll} ref={textAreaRef} onKeyDown={keyPressed} value={text?text:""} disabled={typing} onChange={typingKeys}  className='TextArea'></textarea>
+          <textarea onScroll={handleScroll} ref={textAreaRef} onKeyDown={keyPressed} value={text?text:""} disabled={testStatus=="finished"} onChange={typingKeys}  className='TextArea'></textarea>
           <span ref={placeholderRef} className='PlaceholderText'>{placeHolder}</span>
         </div>
-        <div className='TypingSpeed'>Gross WPM  {startedTyping?"Calculating...":typingSpeed?.grossWPM?typingSpeed?.grossWPM+" WPM":""}</div>
-        <div className='TypingSpeed'>Net WPM  {startedTyping?"Calculating...":typingSpeed?.netWPM?typingSpeed?.netWPM+" WPM":""}</div>
-        <div className='TypingSpeed'>Accuracy  {startedTyping?"Calculating...":typingSpeed?.accuracy?typingSpeed?.accuracy+" %":""}</div>
+        <div className='TypingSpeed'>Gross WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.grossWPM+" WPM":""}</div>
+        <div className='TypingSpeed'>Net WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.netWPM+" WPM":""}</div>
+        <div className='TypingSpeed'>Accuracy  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.accuracy+" %":""}</div>
         <div onClick={resestTypingTest}><button>RESET</button></div>
       </div>
    </div>

@@ -1,9 +1,14 @@
 import './assets/styles.css'
 import TypingArea from './TypingArea'
+import store from './assets/store'
+import { Provider } from 'react-redux'
 
 function App() {
   return(
-    <TypingArea></TypingArea>
+    <Provider store={store}>
+       <TypingArea/>
+    </Provider>
+   
   )
 }
 
