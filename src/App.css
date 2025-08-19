@@ -1,83 +1,163 @@
-.Container{
+/* Background gradient for the whole app */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+}
+
+/* Center container with card effect */
+.Container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100vw;
   text-align: center;
-}
-.TextAreaContainer{
-  position: relative;
-  display: inline-block;
-  width: 50vw;
-  /* height: 25vh; */
-  padding: 10px;
-  font-size: 16px;
+  background: transparent;
 }
 
-.TextArea{
-  /* margin:0; */
+.Container > div {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(60, 90, 150, 0.15);
+  padding: 40px 32px 32px 32px;
+  min-width: 350px;
+  max-width: 600px;
+  width: 90vw;
+}
+
+/* Heading style */
+.Heading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2d3a4b;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+}
+
+/* Typing container */
+.TypingContainer {
   position: relative;
-  display: inline-block;
-  height: 28vh;
-  padding: 10px;
-  font-size: 16px;
   width: 100%;
-  /* padding: 8px 10px; */
-  border-radius: 4px;
-  background-color: transparent;
-  z-index: 1;
-  /* font-family:Arial; */
-  font-size:16px;
-  line-height: normal;
+  min-height: 150px;
+  font-family: inherit;
+  font-size: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+/* Textarea styling */
+.TextArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: inherit;
+  z-index: 2;
   resize: none;
-  text-align: left;
-  font-family: monospace;
-
+  margin: 0;
+  padding: 16px;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
 }
 
-.Wrapper{
-    position: absolute;
-    top: 21px;
-    left: 20.9px;
-    color: #aaa;
-    pointer-events: none;
-    font-size:16px;
-    display: block;
-    /* font-family:Arial; */
-  font-family: monospace;
-
-    line-height: normal;
-    text-align: left;
-}
-
-.typingSpeed{
-  display: block;
-}
-
-.TypingSpeed{
-  font-size: 25px;
-  justify-content:center;
-}
-
-.spanText{
-  position:absolute;
-  top: 7px;
-  left: 12px  ;
+/* Placeholder text overlay */
+.PlaceholderText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  color: #bfcad6;
+  white-space: pre-wrap;
+  overflow: hidden;
   z-index: 1;
-  padding: 10px;
-  border-radius: 3px;
-  font-size:16px;
-  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 16px;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+  opacity: 0.7;
 }
 
-.textarea::placeholder {
-  color: #999;
-  font-family: 'Times New Roman', Times, serif;
-  font-style: italic;
-  font-size: 16px;
-
+/* Progress bar styling */
+.ProgressBar {
+  width: 100vw;
+  height: 8px;
+  appearance: none;
+  margin-bottom: 0;
+  background: #e0eafc;
+  border: none;
+  border-radius: 0 0 8px 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
+.ProgressBar::-webkit-progress-bar {
+  background-color: #e0eafc;
+  border-radius: 8px;
+}
+
+.ProgressBar::-webkit-progress-value {
+  background: linear-gradient(90deg, #5b9df9 0%, #4fd1c5 100%);
+  border-radius: 8px;
+}
+
+.ProgressBar::-moz-progress-bar {
+  background: linear-gradient(90deg, #5b9df9 0%, #4fd1c5 100%);
+  border-radius: 8px;
+}
+
+/* Typing speed display */
+.TypingSpeed {
+  font-size: 1.3rem;
+  color: #3a4a5e;
+  margin: 10px 0;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Reset button styling */
+button {
+  background: linear-gradient(90deg, #5b9df9 0%, #4fd1c5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(60, 90, 150, 0.07);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+button:hover, button:focus {
+  background: linear-gradient(90deg, #4fd1c5 0%, #5b9df9 100%);
+  box-shadow: 0 4px 16px rgba(60, 90, 150, 0.13);
+  outline: none;
+}
+
+/* Hide unused classes */
+.TextAreaContainer,
+.Wrapper,
+.spanText,
+.textarea::placeholder,
 .ms-TextField.ms-TextField--multiline .ms-TextField-field {
+  display: none;
 }
