@@ -1,3 +1,4 @@
+import './App.css'
 import { useEffect, useState,useRef } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { finished, inProgress, notStarted } from './assets/typingslice'
@@ -77,20 +78,33 @@ const TypingArea=()=>{
   return (
     <>
       <progress className='ProgressBar' value={elapsedTime} max={testDuration}></progress>
-    <div className='Container'>
-      <div>
-        <div className='Heading'>Start typing to calculate typing speed</div>
-        <div className='TypingContainer' >
-          <textarea onScroll={handleScroll} ref={textAreaRef} onKeyDown={keyPressed} value={text?text:""} disabled={testStatus=="finished"} onChange={typingKeys}  className='TextArea'></textarea>
-          <span ref={placeholderRef} className='PlaceholderText'>{placeHolder}</span>
+      <div className='Container'>
+        <div>
+          <div className='Heading'>Start typing to calculate typing speed</div>
+          <div className='TypingContainer'>
+            <span
+              ref={placeholderRef}
+              className='PlaceholderText'
+            >
+              {placeHolder}
+            </span>
+            <textarea
+              onScroll={handleScroll}
+              ref={textAreaRef}
+              onKeyDown={keyPressed}
+              value={text ? text : ""}
+              disabled={testStatus == "finished"}
+              onChange={typingKeys}
+              className='TextArea'
+            ></textarea>
+          </div>
+          <div className='TypingSpeed'>Gross WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.grossWPM+" WPM":""}</div>
+          <div className='TypingSpeed'>Net WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.netWPM+" WPM":""}</div>
+          <div className='TypingSpeed'>Accuracy  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.accuracy+" %":""}</div>
+          <div onClick={resestTypingTest}><button>RESET</button></div>
         </div>
-        <div className='TypingSpeed'>Gross WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.grossWPM+" WPM":""}</div>
-        <div className='TypingSpeed'>Net WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.netWPM+" WPM":""}</div>
-        <div className='TypingSpeed'>Accuracy  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.accuracy+" %":""}</div>
-        <div onClick={resestTypingTest}><button>RESET</button></div>
       </div>
-   </div>
- </>
+    </>
   )
 }
 
