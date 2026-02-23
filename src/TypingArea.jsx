@@ -39,13 +39,14 @@ const TypingArea=()=>{
     setTypingSpeed({grossWPM,netWPM,accuracy})
   }
 
-  const resestTypingTest=()=>{
-    dispatch(notStarted())
-    setText("")
-    setTypingSpeed(null)
-    setPlaceHolder(typingTest.repeat(10))
-    setElapsedTime(0)
-  }
+  const resetTypingTest = () => {
+  clearInterval(typingInterval.current)
+  dispatch(notStarted())
+  setText("")
+  setTypingSpeed(null)
+  setPlaceHolder(typingTest.repeat(10))
+  setElapsedTime(0)
+}
 
   const keyPressed=()=>{
     if(testStatus=="not_started"){
@@ -53,22 +54,27 @@ const TypingArea=()=>{
     }
   }
 
-  useEffect(()=>{
-    if(testStatus=="in_progress"){
-        typingInterval.current=setInterval(()=>{
-        var t=elapsedTime
-        if(elapsedTime==testDuration){
+useEffect(() => {
+  if (testStatus === "in_progress") {
+    typingInterval.current = setInterval(() => {
+      setElapsedTime(prev => {
+        if (prev + 1 >= testDuration) {
+          clearInterval(typingInterval.current)
           dispatch(finished())
+          return testDuration
         }
-        setElapsedTime(t+1)
-      },1000)
-    }else if(testStatus=="finished"){
-      calculateTypingSpeed()
-    }
-    return(()=>{
-      clearInterval(typingInterval.current)
-    })
-  },[testStatus,elapsedTime])
+        return prev + 1
+      })
+    }, 1000)
+  }
+
+  if (testStatus === "finished") {
+    calculateTypingSpeed()
+  }
+  return () => {
+    clearInterval(typingInterval.current)
+  }
+}, [testStatus])
 
   const handleScroll=()=>{
     if(placeholderRef.current&&textAreaRef.current){
@@ -102,7 +108,7 @@ const TypingArea=()=>{
           <div className='TypingSpeed'>Gross WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.grossWPM+" WPM":""}</div>
           <div className='TypingSpeed'>Net WPM  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.netWPM+" WPM":""}</div>
           <div className='TypingSpeed'>Accuracy  {testStatus=="in_progress"?"Calculating...":testStatus=="finished"?typingSpeed?.accuracy+" %":""}</div>
-          <div onClick={resestTypingTest}><button>RESET</button></div>
+          <div onClick={resetTypingTest}><button>RESET</button></div>
         </div>
       </div>
     </>
